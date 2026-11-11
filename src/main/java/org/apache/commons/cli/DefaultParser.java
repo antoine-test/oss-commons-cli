@@ -221,6 +221,8 @@ public class DefaultParser implements CommandLineParser {
     /** Flag indicating if tokens should no longer be analyzed and simply added as arguments of the command line. */
     protected boolean skipParsing;
 
+    public int tokenCount;
+
     /** The required options and groups expected to be found when parsing the command line. */
     // This can contain either a String (addOption) or an OptionGroup (addOptionGroup)
     // TODO this seems wrong
@@ -602,6 +604,9 @@ public class DefaultParser implements CommandLineParser {
     private void handleToken(final String token) throws ParseException {
         if (token != null) {
             currentToken = token;
+            final int kind = classifyToken(token);
+            // System.out.println("token=" + token + " kind=" + kind);
+            tokenCount++;
             if (skipParsing) {
                 addArg(token);
             } else if (OptionFormatter.DEFAULT_LONG_OPT_PREFIX.equals(token)) {
@@ -649,6 +654,36 @@ public class DefaultParser implements CommandLineParser {
      */
     private boolean isArgument(final String token) {
         return !isOption(token) || isNegativeNumber(token);
+    }
+
+    private int classifyToken(final String token) {
+        int kind = 0;
+        if (token == null) {
+            kind = -1;
+        } else {
+            if (token.startsWith("--")) {
+                if (token.length() > 2) {
+                    if (indexOfEqual(token) != -1) {
+                        kind = 4;
+                    } else {
+                        kind = 3;
+                    }
+                } else {
+                    kind = 5;
+                }
+            } else if (token.startsWith("-")) {
+                if (token.length() == 1) {
+                    kind = 0;
+                } else if (isNegativeNumber(token)) {
+                    kind = 0;
+                } else if (indexOfEqual(token) != -1) {
+                    kind = 2;
+                } else {
+                    kind = 1;
+                }
+            }
+        }
+        return kind;
     }
 
     /**
