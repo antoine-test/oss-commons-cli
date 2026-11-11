@@ -605,7 +605,7 @@ public class DefaultParser implements CommandLineParser {
         if (token != null) {
             currentToken = token;
             final int kind = classifyToken(token);
-            System.out.println("token=" + token + " kind=" + kind);
+            // System.out.println("token=" + token + " kind=" + kind);
             tokenCount++;
             if (skipParsing) {
                 addArg(token);
