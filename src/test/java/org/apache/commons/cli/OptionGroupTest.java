@@ -74,6 +74,14 @@ class OptionGroupTest {
     }
 
     @Test
+    void testContains() {
+        final OptionGroup optionGroup = new OptionGroup().addOption(Option.builder("a").get());
+        assertTrue(optionGroup.contains("a"));
+        assertFalse(optionGroup.contains("b"));
+        assertFalse(optionGroup.contains(null));
+    }
+
+    @Test
     void testNoOptionsExtraArgs() throws Exception {
         final String[] args = {"arg1", "arg2"};
         final CommandLine cl = parser.parse(options, args);
