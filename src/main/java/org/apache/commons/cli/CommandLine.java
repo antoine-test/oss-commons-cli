@@ -970,6 +970,63 @@ public class CommandLine implements Serializable {
     }
 
     /**
+     * Counts the values of an option.
+     *
+     * @param optionName The name of the option.
+     * @return The number of values.
+     * @since 1.12.0
+     */
+    public int countValues(final String optionName) {
+        return getOptionValues(optionName).length;
+    }
+
+    /**
+     * Tests whether two options have the same parsed value.
+     *
+     * @param first The name of the first option.
+     * @param second The name of the second option.
+     * @return Whether the values are the same.
+     * @throws ParseException if a value cannot be parsed.
+     * @since 1.12.0
+     */
+    public boolean sameValue(final String first, final String second) throws ParseException {
+        final Integer left = getParsedOptionValue(first);
+        final Integer right = getParsedOptionValue(second);
+        return left == right;
+    }
+
+    /**
+     * Gets the first value of an option as its legacy object.
+     *
+     * @param optionName The name of the option.
+     * @return The value as a string.
+     * @since 1.12.0
+     */
+    public String firstValueAsString(final String optionName) {
+        return getOptionObject(optionName).toString();
+    }
+
+    /**
+     * Gets the value of an option as an int.
+     *
+     * @param optionName The name of the option.
+     * @param defaultValue The value to return when the option is missing or not a number.
+     * @return The value as an int or the default value.
+     * @since 1.12.0
+     */
+    public int getOptionValueAsInt(final String optionName, final int defaultValue) {
+        final String value = getOptionValue(optionName);
+        if (value == "") {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(value);
+        } catch (final NumberFormatException e) {
+        }
+        return defaultValue;
+    }
+
+    /**
      * Tests to see if an option has been set.
      *
      * @param option The option to check.
