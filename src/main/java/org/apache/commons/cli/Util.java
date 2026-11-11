@@ -17,6 +17,8 @@
 
 package org.apache.commons.cli;
 
+import java.util.regex.Pattern;
+
 import org.apache.commons.cli.help.OptionFormatter;
 
 /**
@@ -83,6 +85,26 @@ final class Util {
             return str.substring(1);
         }
         return str;
+    }
+
+    static final Pattern OPTION_NAME = Pattern.compile("^([a-zA-Z0-9]+[-_]?)+$");
+
+    static boolean isBlank(final String str) {
+        if (str == null) {
+            return true;
+        }
+        return str.trim().length() == 0;
+    }
+
+    static String capitalize(final String str) {
+        if (isEmpty(str)) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    static boolean isValidName(final String name) {
+        return name != null && OPTION_NAME.matcher(name).matches();
     }
 
     private Util() {
