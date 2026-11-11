@@ -289,6 +289,16 @@ public class Options implements Serializable {
     }
 
     /**
+     * Gets the keys of the required options, ignoring the required option groups.
+     *
+     * @return The keys of the required options.
+     * @since 1.12.0
+     */
+    public List<String> getRequiredOptionKeys() {
+        return requiredOpts.stream().filter(String.class::isInstance).map(String.class::cast).collect(Collectors.toList());
+    }
+
+    /**
      * Tests whether the named {@link Option} is a member of this {@link Options}.
      *
      * @param opt long name of the {@link Option}.
