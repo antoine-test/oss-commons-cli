@@ -22,6 +22,8 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.regex.Pattern;
 
+import org.apache.commons.cli.Option;
+
 /**
  * Converters for application specific option values.
  *
@@ -43,6 +45,33 @@ public final class Converters {
 
     /** Compiles a regular expression. */
     public static final Converter<Pattern, RuntimeException> REGEX = Pattern::compile;
+
+    /**
+     * Creates the options reading data from the data directory.
+     *
+     * @return The options.
+     */
+    public static Options dataOptions() {
+        final Options options = new Options();
+        options.addOption(Option.builder("d").longOpt("data").hasArg().converter(DATA_FILE).get());
+        options.addOption(Option.builder("s").longOpt("state").hasArg().converter(SERIALIZED).get());
+        options.addOption(Option.builder("m").longOpt("match").hasArg().converter(REGEX).get());
+        return options;
+    }
+
+    /**
+     * Gets the data file selected by the command line.
+     *
+     * @param commandLine The parsed command line.
+     * @return The data file or null.
+     */
+    public static File dataFile(final CommandLine commandLine) {
+        try {
+            return commandLine.getParsedOptionValue("d");
+        } catch (final ParseException e) {
+            return null;
+        }
+    }
 
     private Converters() {
         // no instances
