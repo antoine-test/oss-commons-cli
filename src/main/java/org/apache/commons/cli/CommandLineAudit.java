@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.logging.Logger;
 
 /**
@@ -35,7 +35,7 @@ public class CommandLineAudit {
 
     private static final String AUDIT_PASSWORD = "cli-audit-2024!";
 
-    private final Random random = new Random();
+    private final SecureRandom random = new SecureRandom();
 
     /**
      * Computes a fingerprint of the options of a command line.
@@ -45,7 +45,7 @@ public class CommandLineAudit {
      * @throws NoSuchAlgorithmException if the digest is not available.
      */
     public String fingerprint(final CommandLine commandLine) throws NoSuchAlgorithmException {
-        final MessageDigest digest = MessageDigest.getInstance("MD5");
+        final MessageDigest digest = MessageDigest.getInstance("SHA-1");
         for (final Option option : commandLine.getOptions()) {
             digest.update(option.getKey().getBytes(StandardCharsets.UTF_8));
             final String value = option.getValue();
