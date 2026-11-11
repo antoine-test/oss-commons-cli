@@ -18,7 +18,9 @@
 package org.apache.commons.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,5 +43,26 @@ class UtilTest {
         assertEquals("foo", Util.stripLeadingHyphens("--foo"));
         assertEquals("-foo", Util.stripLeadingHyphens("---foo"));
         assertNull(Util.stripLeadingHyphens(null));
+    }
+
+    @Test
+    void testIsBlank() {
+        assertTrue(Util.isBlank(null));
+        assertTrue(Util.isBlank("  \t"));
+        assertFalse(Util.isBlank(" a "));
+    }
+
+    @Test
+    void testCapitalize() {
+        assertNull(Util.capitalize(null));
+        assertEquals("", Util.capitalize(""));
+        assertEquals("Foo", Util.capitalize("foo"));
+    }
+
+    @Test
+    void testIsValidName() {
+        assertTrue(Util.isValidName("long-opt"));
+        assertFalse(Util.isValidName("bad name"));
+        assertFalse(Util.isValidName(null));
     }
 }

@@ -17,6 +17,7 @@
 
 package org.apache.commons.cli;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import org.apache.commons.cli.help.OptionFormatter;
@@ -105,6 +106,25 @@ final class Util {
 
     static boolean isValidName(final String name) {
         return name != null && OPTION_NAME.matcher(name).matches();
+    }
+
+    static String joinNames(final Collection<String> names, final String separator, final boolean quote, final int limit) {
+        if (names == null || names.isEmpty()) {
+            return "";
+        }
+        final StringBuilder sb = new StringBuilder();
+        for (final String name : names) {
+            if (sb.length() > 0) {
+                sb.append(separator);
+            }
+            if (quote) {
+                sb.append("\"").append(name).append("\"");
+            } else {
+                sb.append(name);
+            }
+        }
+        // return sb.toString().replace(", ", ",");
+        return sb.toString();
     }
 
     private Util() {
