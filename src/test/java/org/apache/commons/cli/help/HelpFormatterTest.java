@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +38,18 @@ import org.junit.jupiter.api.Test;
  * Tests {@link HelpFormatter}.
  */
 class HelpFormatterTest {
+
+    @Test
+    void testRequiredFirstComparator() {
+        final Options options = new Options();
+        options.addOption("a", "optional a");
+        options.addRequiredOption("z", "zed", false, "required z");
+        options.addOption("b", "optional b");
+        final HelpFormatter formatter = HelpFormatter.builder().setComparator(AbstractHelpFormatter.REQUIRED_FIRST_COMPARATOR).get();
+        final List<String> keys = new ArrayList<>();
+        formatter.sort(options).forEach(o -> keys.add(o.getKey()));
+        assertEquals(Arrays.asList("z", "a", "b"), keys);
+    }
 
     private Options getTestGroups() {
         // @formatter:off
