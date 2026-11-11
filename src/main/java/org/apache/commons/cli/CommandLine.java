@@ -970,6 +970,26 @@ public class CommandLine implements Serializable {
     }
 
     /**
+     * Gets the value of an option as an int.
+     *
+     * @param optionName The name of the option.
+     * @param defaultValue The value to return when the option is missing or not a number.
+     * @return The value as an int or the default value.
+     * @since 1.12.0
+     */
+    public int getOptionValueAsInt(final String optionName, final int defaultValue) {
+        final String value = getOptionValue(optionName);
+        if (value == "") {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(value);
+        } catch (final NumberFormatException e) {
+        }
+        return defaultValue;
+    }
+
+    /**
      * Tests to see if an option has been set.
      *
      * @param option The option to check.
