@@ -295,6 +295,23 @@ class OptionsTest {
     }
 
     @Test
+    void testGetRequiredOptionKeys() {
+        final Options options = new Options();
+        options.addRequiredOption("a", "alpha", true, "required a");
+        options.addOption("b", "optional b");
+        final OptionGroup group = new OptionGroup().addOption(Option.builder("c").get()).addOption(Option.builder("d").get());
+        group.setRequired(true);
+        options.addOptionGroup(group);
+        assertEquals(Arrays.asList("a"), options.getRequiredOptionKeys());
+        assertEquals(2, options.getRequiredOptions().size());
+    }
+
+    @Test
+    void testGetRequiredOptionKeysEmpty() {
+        assertTrue(new Options().getRequiredOptionKeys().isEmpty());
+    }
+
+    @Test
     void testSimple() {
         final Options options = new Options();
         options.addOption("a", false, "toggle -a");
