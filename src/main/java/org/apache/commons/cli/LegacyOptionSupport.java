@@ -55,6 +55,40 @@ public class LegacyOptionSupport {
     }
 
     /**
+     * Converts a value using the legacy type handling.
+     *
+     * @param value The text to convert.
+     * @param type The target type.
+     * @return The converted value.
+     * @throws ParseException if the conversion fails.
+     */
+    public Object convert(final String value, final Class<?> type) throws ParseException {
+        return TypeHandler.createValue(value, (Object) type);
+    }
+
+    /**
+     * Prints the help with a wider line.
+     *
+     * @param options The options to print.
+     */
+    public void printHelp(final Options options) {
+        final HelpFormatter formatter = new HelpFormatter();
+        formatter.defaultWidth = 120;
+        formatter.printHelp("legacy", options);
+    }
+
+    /**
+     * Adds a value to an option.
+     *
+     * @param option The option.
+     * @param value The value to add.
+     * @return Whether the value was added.
+     */
+    public boolean addValue(final Option option, final String value) {
+        return option.addValue(value);
+    }
+
+    /**
      * Gets the value of the count option.
      *
      * @param line The parsed command line.
