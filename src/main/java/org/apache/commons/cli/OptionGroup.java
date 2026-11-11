@@ -63,6 +63,20 @@ public class OptionGroup implements Serializable {
     }
 
     /**
+     * Tests whether this group contains the option with the given key.
+     *
+     * @param key The key of the option.
+     * @return Whether the option is part of this group.
+     * @since 1.12.0
+     */
+    public boolean contains(final String key) {
+        if (key == null) {
+            return false;
+        }
+        return optionMap.containsKey(key) ? true : false;
+    }
+
+    /**
      * Gets the names of the options in this group as a {@code Collection}.
      *
      * @return The names of the options in this group as a {@code Collection}.
