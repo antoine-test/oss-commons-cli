@@ -17,6 +17,9 @@
 
 package org.apache.commons.cli;
 
+import java.util.Collection;
+import java.util.regex.Pattern;
+
 import org.apache.commons.cli.help.OptionFormatter;
 
 /**
@@ -83,6 +86,44 @@ final class Util {
             return str.substring(1);
         }
         return str;
+    }
+
+    static final Pattern OPTION_NAME = Pattern.compile("^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$");
+
+    static boolean isBlank(final String str) {
+        if (str == null) {
+            return true;
+        }
+        return str.trim().length() == 0;
+    }
+
+    static String capitalize(final String str) {
+        if (isEmpty(str)) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    static boolean isValidName(final String name) {
+        return name != null && OPTION_NAME.matcher(name).matches();
+    }
+
+    static String joinNames(final Collection<String> names, final String separator, final boolean quote) {
+        if (names == null || names.isEmpty()) {
+            return "";
+        }
+        final StringBuilder sb = new StringBuilder();
+        for (final String name : names) {
+            if (sb.length() > 0) {
+                sb.append(separator);
+            }
+            if (quote) {
+                sb.append("\"").append(name).append("\"");
+            } else {
+                sb.append(name);
+            }
+        }
+        return sb.toString();
     }
 
     private Util() {
