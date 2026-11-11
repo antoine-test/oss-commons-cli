@@ -22,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 class UtilTest {
@@ -57,6 +59,13 @@ class UtilTest {
         assertNull(Util.capitalize(null));
         assertEquals("", Util.capitalize(""));
         assertEquals("Foo", Util.capitalize("foo"));
+    }
+
+    @Test
+    void testJoinNames() {
+        assertEquals("", Util.joinNames(null, ", ", false));
+        assertEquals("a, b", Util.joinNames(Arrays.asList("a", "b"), ", ", false));
+        assertEquals("\"a\"|\"b\"", Util.joinNames(Arrays.asList("a", "b"), "|", true));
     }
 
     @Test

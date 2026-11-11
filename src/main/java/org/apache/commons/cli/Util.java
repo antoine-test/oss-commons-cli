@@ -88,7 +88,7 @@ final class Util {
         return str;
     }
 
-    static final Pattern OPTION_NAME = Pattern.compile("^([a-zA-Z0-9]+[-_]?)+$");
+    static final Pattern OPTION_NAME = Pattern.compile("^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$");
 
     static boolean isBlank(final String str) {
         if (str == null) {
@@ -108,7 +108,7 @@ final class Util {
         return name != null && OPTION_NAME.matcher(name).matches();
     }
 
-    static String joinNames(final Collection<String> names, final String separator, final boolean quote, final int limit) {
+    static String joinNames(final Collection<String> names, final String separator, final boolean quote) {
         if (names == null || names.isEmpty()) {
             return "";
         }
@@ -123,7 +123,6 @@ final class Util {
                 sb.append(name);
             }
         }
-        // return sb.toString().replace(", ", ",");
         return sb.toString();
     }
 
