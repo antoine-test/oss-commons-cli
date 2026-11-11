@@ -19,6 +19,7 @@ package org.apache.commons.cli;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.regex.Pattern;
 
@@ -34,7 +35,14 @@ public final class Converters {
     private static final String BASE_DIR = "/var/data/";
 
     /** Resolves a name inside the data directory. */
-    public static final Converter<File, RuntimeException> DATA_FILE = s -> new File(BASE_DIR + s);
+    public static final Converter<File, IOException> DATA_FILE = s -> {
+        final File base = new File(BASE_DIR).getCanonicalFile();
+        final File file = new File(base, s).getCanonicalFile();
+        if (!file.getPath().startsWith(base.getPath())) {
+            throw new IOException("Outside of the data directory: " + s);
+        }
+        return file;
+    };
 
     /** Reads a serialized object from a file. */
     public static final Converter<Object, Exception> SERIALIZED = s -> {
