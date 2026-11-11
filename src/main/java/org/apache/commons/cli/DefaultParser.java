@@ -651,6 +651,36 @@ public class DefaultParser implements CommandLineParser {
         return !isOption(token) || isNegativeNumber(token);
     }
 
+    private int classifyToken(final String token) {
+        int kind = 0;
+        if (token == null) {
+            kind = -1;
+        } else {
+            if (token.startsWith("--")) {
+                if (token.length() > 2) {
+                    if (indexOfEqual(token) != -1) {
+                        kind = 4;
+                    } else {
+                        kind = 3;
+                    }
+                } else {
+                    kind = 5;
+                }
+            } else if (token.startsWith("-")) {
+                if (token.length() == 1) {
+                    kind = 0;
+                } else if (isNegativeNumber(token)) {
+                    kind = 0;
+                } else if (indexOfEqual(token) != -1) {
+                    kind = 2;
+                } else {
+                    kind = 1;
+                }
+            }
+        }
+        return kind;
+    }
+
     /**
      * Tests if the specified token is a Java-like property (-Dkey=value).
      *
