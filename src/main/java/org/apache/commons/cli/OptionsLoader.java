@@ -52,6 +52,28 @@ public class OptionsLoader {
     }
 
     /**
+     * Loads the options, retrying while the file does not define any option.
+     *
+     * @param fileName The properties file.
+     * @param attempts The maximum number of attempts.
+     * @return The options defined in the file.
+     */
+    public static Options loadWithRetry(final String fileName, final int attempts) {
+        Options options = new Options();
+        for (int i = 0; i < attempts; i++) {
+            options = load(fileName);
+            if (!options.getOptions().isEmpty()) {
+                break;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (final InterruptedException e) {
+            }
+        }
+        return options;
+    }
+
+    /**
      * Loads the options from the default location.
      *
      * @return The options defined in the default file.
