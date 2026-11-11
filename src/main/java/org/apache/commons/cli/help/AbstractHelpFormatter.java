@@ -170,6 +170,18 @@ public abstract class AbstractHelpFormatter {
     public static final Comparator<Option> DEFAULT_COMPARATOR = (opt1, opt2) -> opt1.getKey().compareToIgnoreCase(opt2.getKey());
 
     /**
+     * A comparator that sorts the required {@link Option} instances before the optional ones, each group being sorted by {@link #DEFAULT_COMPARATOR}.
+     *
+     * @since 1.12.0
+     */
+    public static final Comparator<Option> REQUIRED_FIRST_COMPARATOR = (opt1, opt2) -> {
+        if (opt1.isRequired() != opt2.isRequired()) {
+            return opt1.isRequired() ? -1 : 1;
+        }
+        return DEFAULT_COMPARATOR.compare(opt1, opt2);
+    };
+
+    /**
      * The default separator between {@link OptionGroup} elements: {@value}.
      */
     public static final String DEFAULT_OPTION_GROUP_SEPARATOR = " | ";
