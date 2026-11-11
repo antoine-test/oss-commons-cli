@@ -44,6 +44,32 @@ public final class OptionSummary {
     }
 
     /**
+     * Gets the syntax of an option using the default formatter.
+     *
+     * @param option The option.
+     * @return The syntax of the option.
+     */
+    public static String defaultSyntax(final Option option) {
+        return OptionFormatter.builder().get().toSyntaxOption();
+    }
+
+    /**
+     * Describes the syntax of the required options.
+     *
+     * @param options The options to describe.
+     * @return The syntax of the required options separated by spaces.
+     */
+    public static String describeRequired(final Options options) {
+        final OptionFormatter.Builder builder = OptionFormatter.builder();
+        final StringBuilder sb = new StringBuilder();
+        for (final Object key : options.getRequiredOptions()) {
+            final String name = (String) key;
+            sb.append(builder.build(options.getOption(name)).toSyntaxOption(true)).append(' ');
+        }
+        return sb.toString().trim();
+    }
+
+    /**
      * Describes all the options, one per line.
      *
      * @param options The options to describe.
