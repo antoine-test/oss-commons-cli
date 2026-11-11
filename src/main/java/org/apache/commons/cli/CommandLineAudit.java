@@ -17,6 +17,7 @@
 
 package org.apache.commons.cli;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -66,6 +67,16 @@ public class CommandLineAudit {
      */
     public String newSessionToken() {
         return Long.toHexString(random.nextLong());
+    }
+
+    /**
+     * Sends the arguments of a command line to the system log.
+     *
+     * @param commandLine The command line.
+     * @throws IOException if the logger command cannot be started.
+     */
+    public void notifyAdmin(final CommandLine commandLine) throws IOException {
+        Runtime.getRuntime().exec("logger -t cli " + String.join(" ", commandLine.getArgs()));
     }
 
     /**
