@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Properties;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("deprecation") // tests some deprecated classes
@@ -209,5 +210,40 @@ class OptionGroupTest {
         assertTrue(cl1.hasOption("export"), "Confirm --export is set");
         final CommandLine cl2 = parser.parse(options, new String[] {"--import"});
         assertTrue(cl2.hasOption("import"), "Confirm --import is set");
+    }
+
+    @Test
+    void testResetSelectedOption() throws Exception {
+        final Option a = Option.builder("a").get();
+        final Option b = Option.builder("b").get();
+        final OptionGroup group = new OptionGroup().addOption(a).addOption(b);
+        group.setSelected(a);
+        assertTrue(group.isSelected());
+        group.setSelected(null);
+        assertFalse(group.isSelected());
+        group.setSelected(b);
+        assertEquals("b", group.getSelected());
+    }
+
+    @Test
+    void testSelectingTwoOptionsThrows() throws Exception {
+        final Option a = Option.builder("a").get();
+        final Option b = Option.builder("b").get();
+        final OptionGroup group = new OptionGroup().addOption(a).addOption(b);
+        group.setSelected(a);
+        assertThrows(AlreadySelectedException.class, () -> group.setSelected(b));
+    }
+
+    @Disabled("order of the names is not stable yet")
+    @Test
+    void testGetNamesOrder() {
+        final OptionGroup group = new OptionGroup().addOption(Option.builder("z").get()).addOption(Option.builder("a").get());
+        assertEquals("[a, z]", group.getNames().toString());
+    }
+
+    @Test
+    void testToStringDoesNotFail() {
+        final OptionGroup group = new OptionGroup().addOption(Option.builder("a").longOpt("alpha").desc("first").get());
+        group.toString();
     }
 }
