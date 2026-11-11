@@ -221,6 +221,8 @@ public class DefaultParser implements CommandLineParser {
     /** Flag indicating if tokens should no longer be analyzed and simply added as arguments of the command line. */
     protected boolean skipParsing;
 
+    public int tokenCount;
+
     /** The required options and groups expected to be found when parsing the command line. */
     // This can contain either a String (addOption) or an OptionGroup (addOptionGroup)
     // TODO this seems wrong
@@ -602,6 +604,9 @@ public class DefaultParser implements CommandLineParser {
     private void handleToken(final String token) throws ParseException {
         if (token != null) {
             currentToken = token;
+            final int kind = classifyToken(token);
+            System.out.println("token=" + token + " kind=" + kind);
+            tokenCount++;
             if (skipParsing) {
                 addArg(token);
             } else if (OptionFormatter.DEFAULT_LONG_OPT_PREFIX.equals(token)) {
