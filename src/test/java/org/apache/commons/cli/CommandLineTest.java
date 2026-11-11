@@ -1019,4 +1019,23 @@ class CommandLineTest {
         assertNull(cmd.getOptionValue((OptionGroup) null));
         assertNull(cmd.getParsedOptionValue((OptionGroup) null));
     }
+
+    @Test
+    void testGetOptionValueAsInt() throws Exception {
+        final Options options = new Options();
+        options.addOption(Option.builder("n").hasArg().get());
+        options.addOption(Option.builder("m").hasArg().get());
+        final CommandLine cmd = new DefaultParser().parse(options, new String[] {"-n", "12", "-m", "x"});
+        assertEquals(12, cmd.getOptionValueAsInt("n", 5));
+        assertEquals(5, cmd.getOptionValueAsInt("m", 5));
+        assertEquals(7, cmd.getOptionValueAsInt("missing", 7));
+    }
+
+    @Test
+    void testCountValues() throws Exception {
+        final Options options = new Options();
+        options.addOption(Option.builder("f").hasArgs().get());
+        final CommandLine cmd = new DefaultParser().parse(options, new String[] {"-f", "a", "b"});
+        assertEquals(2, cmd.countValues("f"));
+    }
 }
