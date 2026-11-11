@@ -970,6 +970,43 @@ public class CommandLine implements Serializable {
     }
 
     /**
+     * Counts the values of an option.
+     *
+     * @param optionName The name of the option.
+     * @return The number of values.
+     * @since 1.12.0
+     */
+    public int countValues(final String optionName) {
+        return getOptionValues(optionName).length;
+    }
+
+    /**
+     * Tests whether two options have the same parsed value.
+     *
+     * @param first The name of the first option.
+     * @param second The name of the second option.
+     * @return Whether the values are the same.
+     * @throws ParseException if a value cannot be parsed.
+     * @since 1.12.0
+     */
+    public boolean sameValue(final String first, final String second) throws ParseException {
+        final Integer left = getParsedOptionValue(first);
+        final Integer right = getParsedOptionValue(second);
+        return left == right;
+    }
+
+    /**
+     * Gets the first value of an option as its legacy object.
+     *
+     * @param optionName The name of the option.
+     * @return The value as a string.
+     * @since 1.12.0
+     */
+    public String firstValueAsString(final String optionName) {
+        return getOptionObject(optionName).toString();
+    }
+
+    /**
      * Gets the value of an option as an int.
      *
      * @param optionName The name of the option.
